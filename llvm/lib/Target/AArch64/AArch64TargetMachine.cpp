@@ -295,8 +295,13 @@ getEffectiveAArch64CodeModel(const Triple &TT,
   if (CM) {
     if (*CM != CodeModel::Small && *CM != CodeModel::Tiny &&
         *CM != CodeModel::Large) {
-      report_fatal_error(
-          "Only small, tiny and large code models are allowed on AArch64");
+      if (!TT.isOSRedox()) {
+          report_fatal_error(
+              "Only small, tiny and large code models are allowed on AArch64");
+      } else if (*CM != CodeModel::Kernel) {
+        report_fatal_error("Only small, tiny, kernel, and large code models "
+                           "are allowed on AArch64");
+      }
     } else if (*CM == CodeModel::Tiny && !TT.isOSBinFormatELF())
       report_fatal_error("tiny code model is only supported on ELF");
     return *CM;

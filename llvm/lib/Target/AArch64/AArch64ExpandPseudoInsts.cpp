@@ -1342,6 +1342,9 @@ bool AArch64ExpandPseudo::expandMI(MachineBasicBlock &MBB,
       SysReg = AArch64SysReg::TPIDR_EL1;
     else if (MF->getSubtarget<AArch64Subtarget>().useROEL0ForTP())
       SysReg = AArch64SysReg::TPIDRRO_EL0;
+    if (MF->getTarget().getTargetTriple().isOSRedox() &&
+        MF->getTarget().getCodeModel() == CodeModel::Kernel)
+      SysReg = AArch64SysReg::TPIDR_EL1;
     BuildMI(MBB, MBBI, MI.getDebugLoc(), TII->get(AArch64::MRS), DstReg)
         .addImm(SysReg);
     MI.eraseFromParent();
