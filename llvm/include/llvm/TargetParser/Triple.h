@@ -203,6 +203,7 @@ public:
     DragonFly,
     FreeBSD,
     Fuchsia,
+    Redox,
     IOS,
     KFreeBSD,
     Linux,
@@ -593,6 +594,10 @@ public:
 
   bool isOSFuchsia() const {
     return getOS() == Triple::Fuchsia;
+  }
+
+  bool isOSRedox() const {
+    return getOS() == Triple::Redox;
   }
 
   bool isOSDragonFly() const { return getOS() == Triple::DragonFly; }
