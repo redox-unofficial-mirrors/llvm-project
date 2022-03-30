@@ -111,7 +111,7 @@ static std::error_code getHostID(SmallVectorImpl<char> &HostID) {
 }
 
 bool LockFileManager::processStillExecuting(StringRef HostID, int PID) {
-#if LLVM_ON_UNIX && !defined(__ANDROID__)
+#if LLVM_ON_UNIX && !defined(__ANDROID__) && !defined(__redox__)
   SmallString<256> StoredHostID;
   if (getHostID(StoredHostID))
     return true; // Conservatively assume it's executing on error.
