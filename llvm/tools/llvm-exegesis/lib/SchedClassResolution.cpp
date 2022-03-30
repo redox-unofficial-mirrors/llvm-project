@@ -107,7 +107,7 @@ getNonRedundantWriteProcRes(const MCSchedClassDesc &SCDesc,
       }
       // The ProcResGroup contributes `RemainingCycles` cycles of its own.
       Result.push_back({WPR->ProcResourceIdx,
-                        static_cast<uint16_t>(std::round(RemainingCycles)),
+                        static_cast<uint16_t>(::round(RemainingCycles)),
                         WPR->StartAtCycle});
       // Spread the remaining cycles over all subunits.
       for (const auto *SubResIdx = ProcResDesc->SubUnitsIdxBegin;

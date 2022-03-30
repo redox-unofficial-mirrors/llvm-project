@@ -2108,9 +2108,9 @@ Value *LibCallSimplifier::replacePowWithExp(CallInst *Pow, IRBuilderBase &B) {
 
     Value *Log = nullptr;
     if (Ty->isFloatTy())
-      Log = ConstantFP::get(Ty, std::log2(BaseF->convertToFloat()));
+      Log = ConstantFP::get(Ty, ::log2(BaseF->convertToFloat()));
     else if (Ty->isDoubleTy())
-      Log = ConstantFP::get(Ty, std::log2(BaseF->convertToDouble()));
+      Log = ConstantFP::get(Ty, ::log2(BaseF->convertToDouble()));
 
     if (Log) {
       Value *FMul = B.CreateFMul(Log, Expo, "mul");

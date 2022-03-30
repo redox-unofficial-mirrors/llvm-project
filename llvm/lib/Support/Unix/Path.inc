@@ -55,6 +55,9 @@ extern char **environ;
 #elif defined(__MVS__)
 #include "llvm/Support/AutoConvert.h"
 #include <sys/ps.h>
+#elif defined(__redox__)
+#include <sys/param.h>
+#include <sys/redox.h>
 #endif
 
 // Both stdio.h and cstdio are included via different paths and
@@ -112,7 +115,7 @@ typedef uint_t uint;
 #endif
 
 #if defined(__NetBSD__) || defined(__DragonFly__) || defined(__GNU__) ||       \
-    defined(__MVS__)
+    defined(__MVS__) || defined(__redox__)
 #define STATVFS_F_FLAG(vfs) (vfs).f_flag
 #else
 #define STATVFS_F_FLAG(vfs) (vfs).f_flags
@@ -550,6 +553,9 @@ static bool is_local_impl(struct STATVFS &Vfs) {
   // The file system can have an arbitrary structure on z/OS; must go with the
   // conservative answer.
   return false;
+#elif defined(__redox__)
+  // Redox does not expose this information
+  return false;
 #else
   return !!(STATVFS_F_FLAG(Vfs) & MNT_LOCAL);
 #endif
@@ -875,7 +881,7 @@ void mapped_file_region::dontNeedImpl() {
   assert(Mode == mapped_file_region::readonly);
   if (!Mapping)
     return;
-#if defined(__MVS__) || defined(_AIX)
+#if defined(__MVS__) || defined(_AIX) || defined(__redox__)
     // If we don't have madvise, or it isn't beneficial, treat this as a no-op.
 #elif defined(POSIX_MADV_DONTNEED)
   ::posix_madvise(Mapping, Size, POSIX_MADV_DONTNEED);
@@ -1139,6 +1145,10 @@ std::error_code openFileForRead(const Twine &Name, int &ResultFD,
   // the real path name.
   char Buffer[PATH_MAX];
   if (::fcntl(ResultFD, F_GETPATH, Buffer) != -1)
+    RealPath->append(Buffer, Buffer + strlen(Buffer));
+#elif defined(__redox__)
+  char Buffer[MAXPATHLEN];
+  if (::redox_fpath(ResultFD, Buffer, MAXPATHLEN) != -1)
     RealPath->append(Buffer, Buffer + strlen(Buffer));
 #else
   char Buffer[PATH_MAX];

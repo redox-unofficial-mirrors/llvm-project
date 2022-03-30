@@ -340,10 +340,33 @@ static bool Execute(ProcessInfo &PI, StringRef Program,
 namespace llvm {
 namespace sys {
 
+#if defined(__redox__)
+struct rusage {
+	struct timeval ru_utime;
+	struct timeval ru_stime;
+	long ru_maxrss;
+};
+
+static pid_t (wait4)(pid_t pid, int *status, int options, struct rusage *usage) {
+	if (usage != NULL) {
+		usage->ru_utime.tv_sec = 0;
+		usage->ru_utime.tv_usec = 0;
+		usage->ru_stime.tv_sec = 0;
+		usage->ru_stime.tv_usec = 0;
+		usage->ru_maxrss = 0;
+	}
+	return waitpid(pid, status, options);
+}
+
+#define _POSIX_ARG_MAX 4096
+#else
+
 #ifndef _AIX
 using ::wait4;
 #else
 static pid_t(wait4)(pid_t pid, int *status, int options, struct rusage *usage);
+#endif
+
 #endif
 
 } // namespace sys
