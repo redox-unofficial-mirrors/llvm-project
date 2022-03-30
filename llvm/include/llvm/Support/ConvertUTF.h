@@ -113,6 +113,12 @@
 #include <system_error>
 #endif
 
+#if defined(__redox__)
+namespace std {
+  typedef basic_string<wchar_t> wstring;
+}
+#endif
+
 // Wrap everything in namespace llvm so that programs can link with llvm and
 // their own version of the unicode libraries.
 
