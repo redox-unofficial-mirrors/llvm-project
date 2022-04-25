@@ -32,7 +32,7 @@ namespace llvm {
 RTDyldMemoryManager::~RTDyldMemoryManager() {}
 
 #if defined(HAVE_REGISTER_FRAME) && defined(HAVE_DEREGISTER_FRAME) &&          \
-    !defined(__SEH__) && !defined(__USING_SJLJ_EXCEPTIONS__)
+    !defined(__SEH__) && !defined(__USING_SJLJ_EXCEPTIONS__) && !defined(__redox__)
 extern "C" void __register_frame(void *);
 extern "C" void __deregister_frame(void *);
 #else
