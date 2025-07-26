@@ -262,7 +262,7 @@ const_iterator &const_iterator::operator++() {
     // Root dir.
     if (was_net ||
 #if defined(__redox__)
-		Component.endswith(":") ||
+		Component.ends_with(":") ||
 #endif
         // c:/
         (is_style_windows(S) && Component.ends_with(":"))) {
