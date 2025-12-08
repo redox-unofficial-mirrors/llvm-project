@@ -463,6 +463,8 @@ std::string GetSystemName() {
 #define HOST_NAME_MAX 64
 #elif defined(BENCHMARK_OS_QNX)
 #define HOST_NAME_MAX 154
+#elif defined(BENCHMARK_OS_REDOX)
+#define HOST_NAME_MAX MAXHOSTNAMELEN
 #elif defined(BENCHMARK_OS_RTEMS)
 #define HOST_NAME_MAX 256
 #elif defined(BENCHMARK_OS_SOLARIS)

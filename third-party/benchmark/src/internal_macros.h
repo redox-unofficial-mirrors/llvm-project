@@ -85,6 +85,8 @@
 #define BENCHMARK_OS_SOLARIS 1
 #elif defined(__QNX__)
 #define BENCHMARK_OS_QNX 1
+#elif defined(__redox__)
+#define BENCHMARK_OS_REDOX 1
 #elif defined(__MVS__)
 #define BENCHMARK_OS_ZOS 1
 #elif defined(__hexagon__)

@@ -178,6 +178,9 @@ double ThreadCPUUsage() {
 #elif defined(BENCHMARK_OS_EMSCRIPTEN)
   // Emscripten doesn't support traditional threads
   return ProcessCPUUsage();
+#elif defined(BENCHMARK_OS_REDOX)
+  // Redox doesn't support CLOCK_THREAD_CPUTIME_ID.
+  return ProcessCPUUsage();
 #elif defined(BENCHMARK_OS_RTEMS)
   // RTEMS doesn't support CLOCK_THREAD_CPUTIME_ID. See
   // https://github.com/RTEMS/rtems/blob/master/cpukit/posix/src/clockgettime.c
