@@ -2241,14 +2241,15 @@ template <class ELFT> void Writer<ELFT>::addStartEndSymbols() {
   // not. We retain the output section so that the section indexes will be
   // correct.
   auto define = [=](StringRef start, StringRef end, OutputSection *os) {
+    /* FIXME: Relibc need these symbols exposed */
     if (os) {
-      Defined *startSym = addOptionalRegular(ctx, start, os, 0);
-      Defined *stopSym = addOptionalRegular(ctx, end, os, -1);
+      Defined *startSym = addOptionalRegular(ctx, start, os, 0, STV_DEFAULT);
+      Defined *stopSym = addOptionalRegular(ctx, end, os, -1, STV_DEFAULT);
       if (startSym || stopSym)
         os->usedInExpression = true;
     } else {
-      addOptionalRegular(ctx, start, ctx.out.elfHeader.get(), 0);
-      addOptionalRegular(ctx, end, ctx.out.elfHeader.get(), 0);
+      addOptionalRegular(ctx, start, ctx.out.elfHeader.get(), 0, STV_DEFAULT);
+      addOptionalRegular(ctx, end, ctx.out.elfHeader.get(), 0, STV_DEFAULT);
     }
   };
 

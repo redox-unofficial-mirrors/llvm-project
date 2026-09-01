@@ -227,6 +227,7 @@ bool InitHeaderSearch::ShouldAddDefaultIncludePaths(
   case llvm::Triple::OpenBSD:
   case llvm::Triple::PS4:
   case llvm::Triple::PS5:
+  case llvm::Triple::Redox:
   case llvm::Triple::RTEMS:
   case llvm::Triple::Solaris:
   case llvm::Triple::UEFI:
