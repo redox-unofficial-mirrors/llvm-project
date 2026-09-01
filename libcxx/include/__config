@@ -841,6 +841,7 @@ typedef __char32_t char32_t;
         defined(__GNU__) ||                                                                                            \
         defined(__APPLE__) ||                                                                                          \
         defined(__MVS__) ||                                                                                            \
+        defined(__redox__) ||                                                                                          \
         defined(_AIX) ||                                                                                               \
         defined(__EMSCRIPTEN__)
 // clang-format on
@@ -925,7 +926,7 @@ typedef __char32_t char32_t;
 #  endif
 
 #  if defined(__BIONIC__) || defined(__NuttX__) || defined(__Fuchsia__) || defined(__wasi__) ||                        \
-      _LIBCPP_HAS_MUSL_LIBC || defined(__OpenBSD__) || defined(__LLVM_LIBC__)
+      _LIBCPP_HAS_MUSL_LIBC || defined(__OpenBSD__) || defined(__redox__) || defined(__LLVM_LIBC__)
 #    define _LIBCPP_PROVIDES_DEFAULT_RUNE_TABLE
 #  endif
 
