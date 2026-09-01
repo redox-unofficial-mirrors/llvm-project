@@ -607,6 +607,34 @@ public:
   using PSOSTargetInfo<Target>::PSOSTargetInfo;
 };
 
+// Redox Target
+template <typename Target>
+class LLVM_LIBRARY_VISIBILITY RedoxTargetInfo : public OSTargetInfo<Target> {
+protected:
+  void getOSDefines(const LangOptions &Opts, const llvm::Triple &Triple,
+                    MacroBuilder &Builder) const override {
+    DefineStd(Builder, "unix", Opts);
+    Builder.defineMacro("__redox__");
+    if (Opts.POSIXThreads)
+      Builder.defineMacro("_REENTRANT");
+    if (this->HasFloat128)
+      Builder.defineMacro("__FLOAT128__");
+  }
+
+public:
+  RedoxTargetInfo(const llvm::Triple &Triple, const TargetOptions &Opts)
+      : OSTargetInfo<Target>(Triple, Opts) {
+    switch (Triple.getArch()) {
+    default:
+      break;
+    case llvm::Triple::x86:
+    case llvm::Triple::x86_64:
+      this->HasFloat128 = true;
+      break;
+    }
+  }
+};
+
 // RTEMS Target
 template <typename Target>
 class LLVM_LIBRARY_VISIBILITY RTEMSTargetInfo : public OSTargetInfo<Target> {
