@@ -624,6 +624,9 @@ protected:
 public:
   RedoxTargetInfo(const llvm::Triple &Triple, const TargetOptions &Opts)
       : OSTargetInfo<Target>(Triple, Opts) {
+    this->SizeType = TargetInfo::UnsignedLong;
+    this->PtrDiffType = TargetInfo::SignedLong;
+    this->IntPtrType = TargetInfo::SignedLong;
     switch (Triple.getArch()) {
     default:
       break;
