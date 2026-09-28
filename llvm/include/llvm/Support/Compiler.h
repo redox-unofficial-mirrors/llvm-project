@@ -666,7 +666,10 @@ void AnnotateIgnoreWritesEnd(const char *file, int line);
 /// appropriate for use with a pointer, integer, or small aggregation of
 /// pointers and integers.
 #if LLVM_ENABLE_THREADS
-#if __has_feature(cxx_thread_local) || defined(_MSC_VER)
+#ifdef __redox__
+// C++ TLS is broken in redox
+#define LLVM_THREAD_LOCAL
+#elif __has_feature(cxx_thread_local) || defined(_MSC_VER)
 #define LLVM_THREAD_LOCAL thread_local
 #else
 // Clang, GCC, and other compatible compilers used __thread prior to C++11 and

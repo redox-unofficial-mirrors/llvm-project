@@ -105,7 +105,12 @@ static void PrintCurStackTrace(raw_ostream &OS) {
   // If there are pretty stack frames registered, walk and emit them.
   OS << "Stack dump:\n";
 
+#ifdef __redox__
+  // otherwise will cause double fault
+  OS << "  Stack dump printing is disabled for Redox\n";
+#else
   PrintStack(OS);
+#endif
   OS.flush();
 }
 
