@@ -88,11 +88,15 @@ bool Redox::HasNativeLLVMSupport() const { return true; }
 const char *Redox::getDefaultLinker() const { return "ld.lld"; }
 
 ToolChain::CXXStdlibType Redox::GetDefaultCXXStdlibType() const {
-  return ToolChain::CST_Libcxx;
+  // TODO: change when supported and distributed
+  // return ToolChain::CST_Libcxx;
+  return ToolChain::CST_Libstdcxx;
 }
 
 ToolChain::RuntimeLibType Redox::GetDefaultRuntimeLibType() const {
-  return ToolChain::RLT_CompilerRT;
+  // TODO: change when decided
+  // return ToolChain::RLT_CompilerRT;
+  return ToolChain::RLT_Libgcc;
 }
 
 Tool *Redox::buildLinker() const {
